@@ -1,1 +1,2 @@
-# atcorder-rust
+# rust for atCorder
+
