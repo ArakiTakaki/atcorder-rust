@@ -1,42 +1,35 @@
-#[allow(unused_imports)]
-use proconio::input;
+#![allow(unused_imports)]
+use std::cmp::*;
+use std::collections::*;
+use itertools::Itertools;
+use proconio::{input, marker::*};
+use superslice::*;
+use whiteread::parse_line;
 
-struct InputData {
-    a: f32,
-    b: f32,
-    n: f32,
-}
 fn main() {
-    input! { a: f32, b: f32, n: f32 };
-    let result = max_floor(InputData{a, b, n});
-    println!("{}", result);
+    // let (n, m, q): (usize, usize, usize) = parse_line().unwrap();
+    // let mut abcd_list: Vec<(usize, usize, usize, usize)> = Vec::with_capacity(50);
+    // for _ in 0..q {
+    //     abcd_list.push(parse_line().unwrap())
+    // }
+    // max_floor(n, m, q, abcd_list);
+     dbg!(pow(3, 3));
+     dbg!((3 as i32).pow(3));
 }
 
+// fn max_floor(n: usize, m: usize, q: usize, abcd_list: Vec<(usize, usize, usize, usize)>) -> i32 {
+//     dbg!(n, m, q, abcd_list);
+//     dbg!(pow(3, 3));
+//     10
+// }
 
-fn max_floor(data: InputData) -> i32 {
-    let InputData {a, b, n} = data;
-    if b - 1.0 < n {
-        return (((a * (b - 1.0)).floor() / b) - (a * ((b - 1.0) / b).floor())) as i32;
-    }
-    (((a * n) / b).floor() - (a * (n / b).floor())) as i32
+fn pow(i: usize, num: usize) -> usize {
+    private_pow(i, num, num)
 }
-
-#[test]
-fn qa() {
-    let answer = 2;
-    let data = InputData{a: 5.0, b: 7.0, n: 4.0};
-    let result = max_floor(data);
-    if result != answer {
-        panic!("not be result : {} expect {}", result, answer)
+// これができるんだったらクロージャーでいいんじゃないの
+fn private_pow(i: usize, num: usize, current: usize ) -> usize {
+    if i == 1 {
+        return num;
     }
-}
-
-#[test]
-fn qb() {
-    let answer = 9;
-    let data = InputData{a: 11.0, b: 10.0, n: 9.0};
-    let result = max_floor(data);
-    if result != answer {
-        panic!("not be result : {} expect {}", result, answer)
-    }
+    private_pow(i - 1, num * current, current)
 }
