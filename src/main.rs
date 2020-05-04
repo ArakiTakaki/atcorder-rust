@@ -1,35 +1,52 @@
 #![allow(unused_imports)]
-use std::cmp::*;
-use std::collections::*;
 use itertools::Itertools;
 use proconio::{input, marker::*};
+use std::cmp::*;
+use std::collections::HashMap;
+use std::collections::*;
 use superslice::*;
 use whiteread::parse_line;
 
+struct Obs {
+    h: usize,
+    is_toll: bool,
+}
+
 fn main() {
-    // let (n, m, q): (usize, usize, usize) = parse_line().unwrap();
-    // let mut abcd_list: Vec<(usize, usize, usize, usize)> = Vec::with_capacity(50);
-    // for _ in 0..q {
-    //     abcd_list.push(parse_line().unwrap())
-    // }
-    // max_floor(n, m, q, abcd_list);
-     dbg!(pow(3, 3));
-     dbg!((3 as i32).pow(3));
-}
+    // N 展望台の数 M ルートの数
+    let (n, m): (usize, usize) = parse_line().unwrap();
+    // H[N] 展望台の高さ
+    let h_list: Vec<usize> = parse_line().unwrap();
+    let mut obs_list: Vec<Obs> = vec![];
 
-// fn max_floor(n: usize, m: usize, q: usize, abcd_list: Vec<(usize, usize, usize, usize)>) -> i32 {
-//     dbg!(n, m, q, abcd_list);
-//     dbg!(pow(3, 3));
-//     10
-// }
-
-fn pow(i: usize, num: usize) -> usize {
-    private_pow(i, num, num)
-}
-// これができるんだったらクロージャーでいいんじゃないの
-fn private_pow(i: usize, num: usize, current: usize ) -> usize {
-    if i == 1 {
-        return num;
+    // 構造体の初期化
+    for idx in 0..n {
+        obs_list.push(Obs {
+            h: h_list[idx],
+            is_toll: true,
+        });
     }
-    private_pow(i - 1, num * current, current)
+
+    // 高さの算出
+    for _ in 0..m {
+        let (a, b): (usize, usize) = parse_line().unwrap();
+        // 高さの解決
+        fn calc(target: &Obs, comparison: &Obs) -> bool {
+            if target.is_toll {
+                return target.h > comparison.h;
+            }
+            false
+        };
+        obs_list[a - 1].is_toll = calc(&obs_list[a - 1], &obs_list[b - 1]);
+        obs_list[b - 1].is_toll = calc(&obs_list[b - 1], &obs_list[a - 1]);
+    }
+
+    // ここをクロージャで記述したい。
+    let mut count = 0;
+    for obs in obs_list {
+        if obs.is_toll {
+            count = count + 1;
+        }
+    }
+    print!("{}", count);
 }
